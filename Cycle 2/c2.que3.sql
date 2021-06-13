@@ -45,15 +45,14 @@ SELECT * FROM customer,item, sale WHERE price > 200 AND sale.item_id = item.item
  AND sale.cust_id = customer.cust_id;
  SELECT cust_name,prod_nums, bill_date FROM customer,
      (SELECT cust_id,COUNT(item_id) AS prod_nums,bill_date FROM sale
- GROUP BY (bill_date, cust_id )
+ GROUP BY bill_date
     ) ci
 WHERE ci.cust_id = customer.cust_id;
 
 SELECT cust_name,COUNT(item_id),bill_date FROM customer c,sale s WHERE c.cust_id = s.cust_id
 GROUP BY cust_name,bill_date HAVING extract(YEAR FROM bill_date) = 2018;
 SELECT item_name FROM item,sale  WHERE sale.item_id = item.item_id  AND sale.cust_id = 5;
-SELECT item_name,price,qty_sold FROM item ,sale,(SELECT sysdate AS Today FROM dual ) tod
- WHERE sale.item_id = item.item_id AND bill_date = today ;
+SELECT item_name,price,qty_sold FROM item ,sale WHERE sale.item_id = item.item_id AND bill_date = CURDATE() ;
 SELECT item_name,  qty_sold,  price,(qty_sold * price) AS total_amount FROM customer,item, sale 
 WHERE cust_name  = 'Rekha' AND sale.item_id = item.item_id AND sale.cust_id = customer.cust_id;
 
